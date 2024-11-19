@@ -1,10 +1,19 @@
 export interface Dog {
-  id: string;
-  name: string;
-  breed: string;
-  dateOfBirth: string;
-  ownerId: string;
-  medicalNotes?: string;
+  DogID: string;
+  Name: string;
+  Breed: string;
+  DOB: string;
+  Gender: string;
+  ColorMarkings: string;
+  MicrochipID: string;
+  owner_name?: string;
+  owner_contact?: string;
+}
+
+export interface Owner {
+  owner_id: string;
+  owner_name: string;
+  owner_contact: string;
 }
 
 export interface Vaccination {

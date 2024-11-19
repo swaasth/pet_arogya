@@ -1,9 +1,14 @@
 'use client'
 
-import { mockDogs } from '@/lib/mockData'
-import Link from 'next/link'
+import { useDogs } from '@/hooks/useDogs';
+import Link from 'next/link';
 
 export default function DogList() {
+  const { dogs, isLoading, error, createDog } = useDogs();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading dogs</div>;
+
   return (
     <div className="mt-8">
       <div className="sm:flex sm:items-center">
@@ -47,21 +52,21 @@ export default function DogList() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {mockDogs.map((dog) => (
-                    <tr key={dog.id}>
+                  {dogs.map((dog) => (
+                    <tr key={dog.DogID}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {dog.name}
+                        {dog.Name}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{dog.breed}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{dog.Breed}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {new Date().getFullYear() - new Date(dog.dateOfBirth).getFullYear()} years
+                        {new Date().getFullYear() - new Date(dog.DOB).getFullYear()} years
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {dog.medicalNotes || '-'}
+                        {dog.MedicalNotes || '-'}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <Link href={`/dogs/${dog.id}`} className="text-indigo-600 hover:text-indigo-900">
-                          View<span className="sr-only">, {dog.name}</span>
+                        <Link href={`/dogs/${dog.DogID}`} className="text-indigo-600 hover:text-indigo-900">
+                          View<span className="sr-only">, {dog.Name}</span>
                         </Link>
                       </td>
                     </tr>
