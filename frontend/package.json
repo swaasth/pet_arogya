@@ -6,11 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:init": "ts-node scripts/init-database.ts",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "prisma:generate": "prisma generate",
+    "db:reset": "ts-node --project scripts/tsconfig.json scripts/reset-database.ts"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.7.4",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@prisma/client": "^5.22.0",
     "@tanstack/react-query": "^5.60.5",
     "@vercel/postgres": "^0.7.2",
     "bcryptjs": "^2.4.3",
@@ -25,14 +32,16 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/mssql": "^8.1.2",
-    "@types/node": "^20",
+    "@types/node": "^20.17.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.14",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "postcss": "^8",
+    "prisma": "^5.22.0",
     "tailwindcss": "^3.4.1",
-    "autoprefixer": "^10.4.14",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

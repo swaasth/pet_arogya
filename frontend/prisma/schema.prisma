@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password_hash String
+  role          String    @default("pet_owner")
+  full_name     String?
+  contact       String?
+  address       String?
+  license_no    String?   @map("license_number")
+  specialization String?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  last_login    DateTime?
+  dogs          DogsOwners[]
+
+  @@map("Users")
+}
+
+model Dog {
+  id             String    @id @default(uuid()) @map("DogID")
+  name           String    @map("Name")
+  breed          String    @map("Breed")
+  dob            DateTime  @map("DOB")
+  gender         String    @map("Gender")
+  colorMarkings  String?   @map("ColorMarkings")
+  microchipId    String?   @map("MicrochipID")
+  medicalNotes   String?   @map("MedicalNotes")
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  owners         DogsOwners[]
+  vaccinations   Vaccination[]
+  dewormings     Deworming[]
+
+  @@map("Dogs")
+}
+
+model DogsOwners {
+  id       String @id @default(uuid())
+  dog      Dog    @relation(fields: [dogId], references: [id])
+  dogId    String
+  owner    User   @relation(fields: [ownerId], references: [id])
+  ownerId  String
+
+  @@unique([dogId, ownerId])
+  @@map("Dogs_Owners")
+}
+
+model Vaccination {
+  id               String   @id @default(uuid()) @map("VaccinationID")
+  dog              Dog      @relation(fields: [dogId], references: [id])
+  dogId            String   @map("DogID")
+  vaccineName      String   @map("VaccineName")
+  dateAdministered DateTime @map("DateAdministered")
+  nextDueDate      DateTime @map("NextDueDate")
+  administeredBy   String   @map("AdministeredBy")
+  notes            String?  @map("Notes")
+
+  @@map("Vaccinations")
+}
+
+model Deworming {
+  id               String   @id @default(uuid()) @map("DewormingID")
+  dog              Dog      @relation(fields: [dogId], references: [id])
+  dogId            String   @map("DogID")
+  medicineName     String   @map("MedicineName")
+  dateAdministered DateTime @map("DateAdministered")
+  nextDueDate      DateTime @map("NextDueDate")
+  administeredBy   String   @map("AdministeredBy")
+  notes            String?  @map("Notes")
+
+  @@map("Deworming")
+}
+
+model Breeds {
+  id               String   @id @default(uuid()) @map("BreedID")
+  name             String   @map("Name")
+  breedGroup       String   @map("BreedGroup")
+  size             String   @map("Size")
+  coatType         String   @map("CoatType")
+  activityLevel    String   @map("ActivityLevel")
+  groomingNeeds    String   @map("GroomingNeeds")
+  lifeExpectancy   String   @map("LifeExpectancy")
+  commonHealthIssues String  @map("CommonHealthIssues")
+
+  @@map("Breeds")
+} 

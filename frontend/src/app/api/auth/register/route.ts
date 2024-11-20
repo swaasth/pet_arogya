@@ -1,96 +1,83 @@
-import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import sql from 'mssql';
+import { prisma } from '@/lib/prisma'
+import { NextResponse } from 'next/server'
+import bcrypt from 'bcryptjs'
+import { Prisma } from '@prisma/client'
 
 export async function POST(request: Request) {
   try {
-    const { email, password, role, profileData } = await request.json();
+    const body = await request.json()
+    const { email, password, role, profileData } = body
 
-    const connectionString = 
-      `Server=tcp:${process.env.AZURE_SQL_SERVER},${process.env.AZURE_SQL_PORT};` +
-      `Initial Catalog=${process.env.AZURE_SQL_DATABASE};` +
-      `User ID=${process.env.AZURE_SQL_USER};` +
-      `Password=${process.env.AZURE_SQL_PASSWORD};` +
-      `Encrypt=True;` +
-      `TrustServerCertificate=False;`;
+    console.log('Registration attempt:', { email, role })
 
-    const pool = await sql.connect(connectionString);
-    const transaction = new sql.Transaction(pool);
+    // Validate input
+    if (!email || !password || !role) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
 
     try {
-      await transaction.begin();
-
       // Check if user exists
-      const userCheck = await transaction.request()
-        .input('email', sql.VarChar, email)
-        .query('SELECT email FROM Users WHERE email = @email');
+      const existingUser = await prisma.user.findUnique({
+        where: { email }
+      })
 
-      if (userCheck.recordset.length > 0) {
-        throw new Error('Email already registered');
+      if (existingUser) {
+        return NextResponse.json(
+          { error: 'Email already registered' },
+          { status: 400 }
+        )
       }
 
       // Hash password
-      const hashedPassword = await bcrypt.hash(password, 12);
+      const hashedPassword = await bcrypt.hash(password, 10)
 
       // Create user
-      const userResult = await transaction.request()
-        .input('email', sql.VarChar, email)
-        .input('password_hash', sql.VarChar, hashedPassword)
-        .input('role', sql.VarChar, role)
-        .query(`
-          INSERT INTO Users (email, password_hash, role)
-          OUTPUT INSERTED.user_id
-          VALUES (@email, @password_hash, @role)
-        `);
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password_hash: hashedPassword,
+          role,
+          full_name: profileData?.fullName || null,
+          contact: profileData?.contactNumber || null,
+          address: role === 'veterinary' ? profileData?.clinicAddress : null,
+          license_no: role === 'veterinary' ? profileData?.licenseNumber : null,
+          specialization: role === 'veterinary' ? profileData?.specialization : null
+        }
+      })
 
-      const userId = userResult.recordset[0].user_id;
+      return NextResponse.json({
+        success: true,
+        message: 'Registration successful',
+        userId: user.id
+      })
 
-      // Create profile based on role
-      if (role === 'pet_owner') {
-        await transaction.request()
-          .input('user_id', sql.UniqueIdentifier, userId)
-          .input('owner_name', sql.VarChar, profileData.fullName)
-          .input('owner_contact', sql.VarChar, profileData.contactNumber)
-          .query(`
-            INSERT INTO Pet_Owners (user_id, owner_name, owner_contact)
-            VALUES (@user_id, @owner_name, @owner_contact)
-          `);
-      } else if (role === 'veterinary') {
-        await transaction.request()
-          .input('user_id', sql.UniqueIdentifier, userId)
-          .input('license_number', sql.VarChar, profileData.licenseNumber)
-          .input('full_name', sql.VarChar, profileData.fullName)
-          .input('specialization', sql.VarChar, profileData.specialization)
-          .input('contact_number', sql.VarChar, profileData.contactNumber)
-          .input('clinic_address', sql.Text, profileData.clinicAddress)
-          .query(`
-            INSERT INTO Veterinarians (
-              user_id, license_number, full_name, 
-              specialization, contact_number, clinic_address
-            )
-            VALUES (
-              @user_id, @license_number, @full_name,
-              @specialization, @contact_number, @clinic_address
-            )
-          `);
+    } catch (dbError) {
+      console.error('Database operation failed:', dbError)
+      
+      if (dbError instanceof Prisma.PrismaClientKnownRequestError) {
+        // Handle known Prisma errors
+        if (dbError.code === 'P2002') {
+          return NextResponse.json(
+            { error: 'Email already exists' },
+            { status: 400 }
+          )
+        }
       }
 
-      await transaction.commit();
-      await pool.close();
-
-      return NextResponse.json({ 
-        success: true, 
-        message: 'Registration successful' 
-      });
-    } catch (error) {
-      await transaction.rollback();
-      throw error;
+      return NextResponse.json(
+        { error: 'Database operation failed' },
+        { status: 500 }
+      )
     }
+
   } catch (error) {
-    console.error('Registration error:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: error.message 
-    }, { status: 400 });
+    console.error('Registration error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 } 

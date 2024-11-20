@@ -1,4 +1,4 @@
-import { getDbConnection } from '@/lib/db'
+import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -13,24 +13,24 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const pool = await getDbConnection()
-    
-    const result = await pool.request()
-      .input('dogId', params.dogId)
-      .query(`
-        SELECT 
-          DewormingID as id,
-          MedicineName as medicationName,
-          DateAdministered as dateAdministered,
-          NextDueDate as nextDue,
-          AdministeredBy as administeredBy,
-          Notes as notes
-        FROM Deworming
-        WHERE DogID = @dogId
-        ORDER BY DateAdministered DESC
-      `)
+    const records = await prisma.deworming.findMany({
+      where: {
+        dogId: params.dogId
+      },
+      select: {
+        id: true,
+        medicineName: true,
+        dateAdministered: true,
+        nextDueDate: true,
+        administeredBy: true,
+        notes: true
+      },
+      orderBy: {
+        dateAdministered: 'desc'
+      }
+    })
 
-    return NextResponse.json(result.recordset)
+    return NextResponse.json(records)
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch deworming records' },

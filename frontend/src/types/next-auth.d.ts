@@ -1,15 +1,17 @@
 import 'next-auth';
+import { User as PrismaUser } from '@prisma/client';
 
 declare module 'next-auth' {
-  interface User {
-    id: string;
-    email: string;
-    role: 'pet_owner' | 'veterinary';
+  interface User extends PrismaUser {
     profileId: string;
-    name?: string;
   }
 
   interface Session {
-    user: User;
+    user: User & {
+      id: string;
+      email: string;
+      role: string;
+      profileId: string;
+    };
   }
 } 

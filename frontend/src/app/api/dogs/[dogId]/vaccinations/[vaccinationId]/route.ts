@@ -1,4 +1,4 @@
-import { getDbConnection } from '@/lib/db'
+import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -13,16 +13,12 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const pool = await getDbConnection()
-    
-    await pool.request()
-      .input('vaccinationId', params.vaccinationId)
-      .input('dogId', params.dogId)
-      .query(`
-        DELETE FROM Vaccinations 
-        WHERE VaccinationID = @vaccinationId 
-        AND DogID = @dogId
-      `)
+    await prisma.vaccination.delete({
+      where: {
+        id: params.vaccinationId,
+        dogId: params.dogId
+      }
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {

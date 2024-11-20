@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Dog } from '@/types/dog';
+import { Dog } from '@prisma/client';
 
 export function useDogs() {
   const queryClient = useQueryClient();
@@ -17,7 +17,7 @@ export function useDogs() {
   });
 
   const createDog = useMutation({
-    mutationFn: async (newDog: Omit<Dog, 'DogID'>) => {
+    mutationFn: async (newDog: Omit<Dog, 'id' | 'created_at' | 'updated_at'>) => {
       const response = await fetch('/api/dogs', {
         method: 'POST',
         headers: {

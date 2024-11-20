@@ -1,8 +1,5 @@
-import { getCurrentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import HealthMetrics from '@/components/HealthMetrics';
-import DogList from '@/components/dogs/DogList';
-import { Suspense } from 'react';
+import { getCurrentUser } from '@/lib/auth';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -12,23 +9,20 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="md:flex md:items-center md:justify-between">
-        <div className="min-w-0 flex-1">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-            Welcome back, {user.name || user.email}
-          </h2>
-        </div>
-      </div>
-
-      <Suspense fallback={<div>Loading health metrics...</div>}>
-        <HealthMetrics />
-      </Suspense>
-
-      <div className="mt-8">
-        <Suspense fallback={<div>Loading dogs...</div>}>
-          <DogList />
-        </Suspense>
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome {user.full_name || user.email}</p>
+      <div>
+        <h2>Your Profile</h2>
+        <p>Role: {user.role}</p>
+        {user.contact && <p>Contact: {user.contact}</p>}
+        {user.address && <p>Address: {user.address}</p>}
+        {user.role === 'veterinary' && (
+          <>
+            {user.license_no && <p>License: {user.license_no}</p>}
+            {user.specialization && <p>Specialization: {user.specialization}</p>}
+          </>
+        )}
       </div>
     </div>
   );
