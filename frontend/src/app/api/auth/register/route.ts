@@ -7,10 +7,10 @@ export async function POST(request: Request) {
     const { email, password, role, profileData } = await request.json();
 
     const connectionString = 
-      `Server=tcp:petarogyaserver.database.windows.net,1433;` +
-      `Initial Catalog=petarogyadb;` +
-      `User ID=taneshq;` +
-      `Password=tVjs$dGGpP3z6N;` +
+      `Server=tcp:${process.env.AZURE_SQL_SERVER},${process.env.AZURE_SQL_PORT};` +
+      `Initial Catalog=${process.env.AZURE_SQL_DATABASE};` +
+      `User ID=${process.env.AZURE_SQL_USER};` +
+      `Password=${process.env.AZURE_SQL_PASSWORD};` +
       `Encrypt=True;` +
       `TrustServerCertificate=False;`;
 
