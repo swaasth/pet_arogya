@@ -3,65 +3,79 @@
 ## Main Layout Structure
 ```mermaid
 graph TD
-A[RootLayout] --> B[DashboardLayout]
-B --> C[Navigation Sidebar]
-B --> D[Main Content Area]
-D --> E[Dashboard Page]
-D --> F[Dogs Page]
-D --> G[Appointments Page]
-D --> H[Health Records Page]
+A[RootLayout] --> B[AuthLayout]
+B --> C[LoginPage]
+B --> D[RegisterPage]
+A --> E[DashboardLayout]
+E --> F[Navigation Sidebar]
+E --> G[Main Content Area]
+G --> H[Dashboard Page]
+G --> I[Dogs Page]
+G --> J[Appointments Page]
+G --> K[Settings Page]
 ```
 
 ## Key Components Breakdown
 
+### Authentication Components
+- **AuthLayout**
+  - Handles authentication flow
+  - Login/Register forms
+  - Password reset functionality
+
 ### Dashboard Components
-- **HealthMetrics**
-  - Shows overview statistics
-  - Displays counts for:
-    - Total dogs
-    - Upcoming vaccinations
-    - Due deworming
+- **DashboardOverview**
+  - Quick statistics
+  - Recent activities
+  - Upcoming appointments
+  - Due vaccinations/deworming
 
-- **DogList**
-  - Table view of all dogs
-  - Quick access to dog profiles
-  - Add new dog functionality
+- **DogsList**
+  - DataTable view of all dogs
+  - Searchable and sortable
+  - Actions column with quick links
+  - Add/Edit/Delete functionality
 
-### Dog-Related Components
-- **DogProfile**
-  - Basic dog information
-  - Medical notes
-  - Edit capabilities
+### Dog Management Components
+- **DogForm**
+  - Add/Edit dog information
+  - Image upload capability
+  - Form validation
 
-- **DogHealthRecords**
-  - Vaccination history
-  - Deworming records
-  - Timeline view
+- **DogDetails**
+  - Tabbed interface for:
+    - Basic information
+    - Health records
+    - Appointments
+    - Documents
 
-### Appointment Components
-- **AppointmentsPage**
-  - Table of all appointments
-  - Status indicators
-  - Filtering options
-  - Add new appointment button
+### Shared Components
+- **DataTable**
+  - Reusable table component
+  - Column sorting
+  - Pagination
+  - Search functionality
+  - Row selection
 
-## Design Notes for UI/UX
+- **Forms**
+  - Form input components
+  - Date pickers
+  - Select dropdowns
+  - File uploaders
+
+## Design System
 
 ### Color Scheme
-- Primary actions: Indigo-600 (#4F46E5)
-- Success states: Green-100/800
-- Warning states: Red-100/800
-- Info states: Blue-100/800
-- Neutral text: Gray-500/900
+- Primary: Blue-600 (#2563EB)
+- Secondary: Gray-600
+- Success: Green-500
+- Error: Red-500
+- Warning: Yellow-500
 
-### Responsive Behavior
-- Desktop: Full sidebar visible
-- Mobile: Collapsible sidebar with hamburger menu
-- Tables become scrollable on smaller screens
-- Forms adjust to single column on mobile
-
-### Key Interaction Points
-1. Navigation sidebar (always accessible)
-2. Add new item buttons (top right of sections)
-3. Status indicators (color-coded for quick recognition)
-4. Action buttons (consistently positioned)
+### Responsive Design
+- Mobile-first approach
+- Breakpoints:
+  - sm: 640px
+  - md: 768px
+  - lg: 1024px
+  - xl: 1280px

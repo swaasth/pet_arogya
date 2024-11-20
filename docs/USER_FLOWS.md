@@ -1,46 +1,65 @@
 # User Flow Documentation
 
-## Main Navigation Flows 
+## Authentication Flow
 
 ```mermaid
 graph TD
-A[Dashboard] --> B[Dogs List]
-A --> C[Appointments]
-A --> D[Health Records]
-A --> E[Reports]
-B --> F[Add New Dog]
-B --> G[View Dog Profile]
-G --> H[Dog Details]
-G --> I[Health Records]
-C --> J[Add Appointment]
-C --> K[View Appointments]
-D --> L[View Vaccinations]
-D --> M[View Deworming]
+A[Landing Page] --> B{Authenticated?}
+B -->|No| C[Login Page]
+B -->|Yes| D[Dashboard]
+C --> E[Register Page]
+C --> F[Reset Password]
 ```
 
-## Detailed User Flows
+## Main Application Flows
+
+```mermaid
+graph TD
+A[Dashboard] --> B[Dogs Management]
+A --> C[Appointments]
+A --> D[Settings]
+
+B --> E[Add Dog]
+B --> F[View Dog]
+F --> G[Edit Dog]
+F --> H[Health Records]
+F --> I[Documents]
+
+C --> J[Calendar View]
+C --> K[List View]
+C --> L[Add Appointment]
+```
+
+## Detailed Flows
+
+### Authentication Flow
+1. User arrives at landing page
+2. If not authenticated:
+   - Login with email/password
+   - Register new account
+   - Reset password if forgotten
+3. After authentication:
+   - Redirected to dashboard
+   - Session maintained with JWT
 
 ### Dog Management Flow
-1. User lands on Dashboard
-2. Views list of dogs with basic info
-3. Can either:
-   - Add new dog (via "Add dog" button)
-   - View existing dog profile (via "View" link)
-4. When viewing dog profile:
-   - Toggle between Profile and Health Records tabs
-   - View detailed information
-   - Access medical history
+1. Dashboard overview
+2. Dogs list with:
+   - Search functionality
+   - Filters
+   - Sort options
+3. Dog profile:
+   - Basic information tab
+   - Health records tab
+   - Appointments tab
+   - Documents tab
 
-### Appointment Management Flow
-1. User accesses Appointments page
-2. Views table of all appointments with:
-   - Dog name
-   - Appointment type
-   - Date
-   - Status (color-coded)
-   - Notes
-3. Can add new appointment via "Add Appointment" button
-4. Appointments are color-coded:
-   - Blue: Scheduled
-   - Green: Completed
-   - Red: Cancelled
+### Appointment Management
+1. View appointments:
+   - Calendar view
+   - List view with filters
+2. Add/Edit appointments:
+   - Select dog
+   - Choose date/time
+   - Set reminder
+   - Add notes

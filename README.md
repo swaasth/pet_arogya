@@ -1,83 +1,95 @@
-# Pet Arogya - Dog Health Management Platform
+# Pet Arogya - Modern Dog Health Management System
 
-A comprehensive platform for managing dog health records, appointments, and genetic data. Built with Next.js, TypeScript, and Tailwind CSS.
+A Next.js 14-based platform for comprehensive dog health management with real-time updates and responsive design.
 
-## Features
+## Core Features
 
-- 🐕 Dog Profile Management
-  - Create and manage dog profiles
-  - Track basic information and medical history
-  - View detailed health records
+- 🔐 Authentication
+  - Email/Password login
+  - Role-based access control
+  - Protected routes
 
-- 📅 Appointment Management
-  - Schedule veterinary visits
-  - Track vaccination appointments
-  - Manage grooming sessions
+- 🐕 Dog Management
+  - Comprehensive dog profiles
+  - Image upload
+  - Health record tracking
+  - Document management
 
-- 💉 Health Records
-  - Vaccination tracking
-  - Deworming schedules
-  - Medical history documentation
-
-- 📊 Health Analytics
-  - Overview dashboard
-  - Health metrics visualization
-  - Upcoming appointment reminders
+- 📅 Appointments
+  - Calendar integration
+  - Status tracking
+  - Email notifications
+  - Recurring appointments
 
 ## Tech Stack
 
 - **Frontend**
-  - Next.js 14
+  - Next.js 14 (App Router)
   - TypeScript
   - Tailwind CSS
-  - Headless UI
-  - Hero Icons
-  - Date-fns
+  - Shadcn/ui
+  - React Query
+  - Zod validation
+  - React Hook Form
 
-- **Backend** (Coming Soon)
-  - Node.js
-  - PostgreSQL
-  - Prisma ORM
+- **Authentication**
+  - NextAuth.js
+  - JWT tokens
+  - Role-based access
+
+- **Database**
+  - MongoDB
+  - Mongoose ODM
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18.x or later
-- npm or yarn
+- Node.js 18.17 or later
+- MongoDB instance
+- npm or pnpm
 
 ### Installation
 
-1. Clone the repository
+1. Clone and install
 ```bash
 git clone https://github.com/yourusername/pet-arogya.git
 cd pet-arogya
-```
-2. Install frontend dependencies
-```bash
-cd frontend
 npm install
 ```
-3. Run the development server
+
+2. Set up environment variables
+```bash
+cp .env.example .env.local
+# Edit .env.local with your values
+```
+
+3. Run development server
 ```bash
 npm run dev
 ```
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Project Structure
-
+```
 pet-arogya/
-├── frontend/
-│ ├── src/
-│ │ ├── app/ # Next.js app router pages
-│ │ ├── components/ # Reusable React components
-│ │ │ ├── dogs/ # Dog-related components
-│ │ │ └── layouts/ # Layout components
-│ │ ├── lib/ # Utilities and helpers
-│ │ └── types/ # TypeScript type definitions
-│ ├── public/ # Static files
-│ └── package.json
-└── README.md
+├── app/
+│   ├── (auth)/
+│   │   ├── login/
+│   │   └── register/
+│   ├── (dashboard)/
+│   │   ├── dogs/
+│   │   ├── appointments/
+│   │   └── settings/
+│   └── api/
+├── components/
+│   ├── ui/
+│   ├── forms/
+│   └── shared/
+├── lib/
+│   ├── utils/
+│   └── validations/
+└── types/
+```
 
 ## Available Scripts
 
