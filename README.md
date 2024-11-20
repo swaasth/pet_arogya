@@ -38,15 +38,16 @@ A Next.js 14-based platform for comprehensive dog health management with real-ti
   - Role-based access
 
 - **Database**
-  - MongoDB
-  - Mongoose ODM
+  - Azure SQL Database
+  - SQL Server
+  - MSSQL Node.js Driver
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18.17 or later
-- MongoDB instance
+- Azure SQL Database instance
 - npm or pnpm
 
 ### Installation
