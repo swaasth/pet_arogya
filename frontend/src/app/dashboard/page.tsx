@@ -1,5 +1,8 @@
 import { getCurrentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import HealthMetrics from '@/components/HealthMetrics';
+import DogList from '@/components/dogs/DogList';
+import { Suspense } from 'react';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -9,36 +12,23 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">
-        Welcome, {user.name || user.email}
-      </h1>
-      
-      <div className="bg-white shadow rounded-lg p-6">
-        <div className="mb-4">
-          <h2 className="text-lg font-medium text-gray-900">Your Profile</h2>
-          <p className="text-sm text-gray-500">
-            Role: {user.role === 'pet_owner' ? 'Pet Owner' : 'Veterinarian'}
-          </p>
+    <div className="space-y-6">
+      <div className="md:flex md:items-center md:justify-between">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            Welcome back, {user.name || user.email}
+          </h2>
         </div>
+      </div>
 
-        {user.role === 'pet_owner' ? (
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Your Pets</h3>
-            {/* Add pet listing component here */}
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-              Add New Pet
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Your Appointments</h3>
-            {/* Add appointments listing component here */}
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-              View Schedule
-            </button>
-          </div>
-        )}
+      <Suspense fallback={<div>Loading health metrics...</div>}>
+        <HealthMetrics />
+      </Suspense>
+
+      <div className="mt-8">
+        <Suspense fallback={<div>Loading dogs...</div>}>
+          <DogList />
+        </Suspense>
       </div>
     </div>
   );

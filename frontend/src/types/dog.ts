@@ -1,13 +1,14 @@
 export interface Dog {
-  DogID: string;
+  DogID: number;
   Name: string;
   Breed: string;
   DOB: string;
   Gender: string;
-  ColorMarkings: string;
-  MicrochipID: string;
-  owner_name?: string;
-  owner_contact?: string;
+  ColorMarkings?: string;
+  MicrochipID?: string;
+  MedicalNotes?: string;
+  CreatedAt: string;
+  UpdatedAt: string;
 }
 
 export interface Owner {
@@ -17,17 +18,19 @@ export interface Owner {
 }
 
 export interface Vaccination {
-  id: string;
-  dogId: string;
+  id: number;
   vaccineName: string;
   dateAdministered: string;
   nextDue: string;
+  administeredBy: string;
+  notes?: string;
 }
 
 export interface DewormingRecord {
-  id: string;
-  dogId: string;
+  id: number;
   medicationName: string;
   dateAdministered: string;
   nextDue: string;
+  administeredBy: string;
+  notes?: string;
 } 

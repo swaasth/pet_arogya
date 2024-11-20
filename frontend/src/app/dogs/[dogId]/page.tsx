@@ -9,7 +9,7 @@ import { Fragment } from 'react'
 
 export default function DogPage() {
   const params = useParams()
-  const dogId = params.id as string
+  const dogId = params.dogId as string
   
   const dog = mockDogs.find(d => d.id === dogId)
   const vaccinations = mockVaccinations.filter(v => v.dogId === dogId)
