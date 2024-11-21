@@ -10,6 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
+# Make sure lib folder is not ignored
+!lib/
+
 # testing
 /coverage
 
