@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "NEXTAUTH_URL": "https://your-domain.vercel.app",
+    "NEXTAUTH_SECRET": "@nextauth_secret"
+  },
+  "crons": [
+    {
+      "path": "/api/cron/reminders",
+      "schedule": "0 17 * * *"
+    }
+  ]
+} 

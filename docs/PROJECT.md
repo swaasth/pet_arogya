@@ -1,47 +1,137 @@
 # Pet Arogya - Modern Dog Health Management System
 
-## Project Overview
-
-Pet Arogya is a comprehensive web-based platform designed to help pet owners and veterinarians manage dog health records, appointments, and medical histories efficiently. Built with modern web technologies, it provides a user-friendly interface for tracking all aspects of a dog's health care journey.
+A Next.js 14-based platform for comprehensive dog health management with real-time updates and responsive design.
 
 ## Core Features
 
-### 1. Authentication & User Management
-- Secure email/password authentication
-- OAuth integration with Google
-- Role-based access control (Pet Owners & Veterinarians)
-- Password reset functionality with email notifications
-- Protected routes and authenticated API endpoints
+- 🔐 Authentication
+  - Email/Password login
+  - Role-based access control
+  - Protected routes
 
-### 2. Dog Profile Management
-- Comprehensive dog information tracking
-- Multiple dogs per owner
-- Breed information and characteristics
-- Medical history and notes
-- Image upload capabilities
+- 🐕 Dog Management
+  - Comprehensive dog profiles
+  - Image upload
+  - Health record tracking
+  - Document management
 
-### 3. Health Records
-- Vaccination tracking with due dates
-- Deworming schedule management
-- Health metrics monitoring
-- Document attachments
-- Medical history timeline
+- 📅 Appointments
+  - Calendar integration
+  - Status tracking
+  - Email notifications
+  - Recurring appointments
 
-### 4. Appointment Management
-- Schedule veterinary visits
-- Status tracking (scheduled/completed/cancelled)
-- Calendar integration
-- Email notifications for upcoming appointments
-- Appointment history
+## Tech Stack
 
-## Technical Architecture
+- **Frontend**
+  - Next.js 14 (App Router)
+  - TypeScript
+  - Tailwind CSS
+  - Shadcn/ui
+  - React Query
+  - Zod validation
+  - React Hook Form
 
-### Frontend Architecture
-- Next.js 14 with App Router for modern React architecture
-- TypeScript for type safety
-- Tailwind CSS for responsive design
-- React Query for efficient data fetching
-- Framer Motion for smooth animations
-- HeadlessUI for accessible components
+- **Authentication**
+  - NextAuth.js
+  - JWT tokens
+  - Role-based access
 
-Referenced in:
+- **Database**
+  - Azure SQL Database
+  - SQL Server
+  - MSSQL Node.js Driver
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18.17 or later
+- Azure SQL Database instance
+- npm or pnpm
+
+### Installation
+
+1. Clone and install
+```bash
+git clone https://github.com/yourusername/pet-arogya.git
+cd pet-arogya
+npm install
+```
+
+2. Set up environment variables
+```bash
+cp .env.example .env.local
+# Edit .env.local with your values
+```
+
+3. Run development server
+```bash
+npm run dev
+```
+
+### Project Structure
+```
+pet-arogya/
+├── app/
+│   ├── (auth)/
+│   │   ├── login/
+│   │   └── register/
+│   ├── (dashboard)/
+│   │   ├── dogs/
+│   │   ├── appointments/
+│   │   └── settings/
+│   └── api/
+├── components/
+│   ├── ui/
+│   ├── forms/
+│   └── shared/
+├── lib/
+│   ├── utils/
+│   └── validations/
+└── types/
+```
+
+## Available Scripts
+
+In the frontend directory, you can run:
+
+- `npm run dev` - Runs the app in development mode
+- `npm run build` - Builds the app for production
+- `npm start` - Runs the built app in production mode
+- `npm run lint` - Runs ESLint for code quality
+- `npm run test` - Runs the test suite (coming soon)
+
+## Features in Development
+
+- [ ] Authentication and user management
+- [ ] Genetic data integration
+- [ ] Mobile app using React Native
+- [ ] Advanced health analytics
+- [ ] Integration with veterinary services
+- [ ] API documentation
+- [ ] Automated testing
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+- Next.js team for the amazing framework
+- Tailwind CSS for the utility-first CSS framework
+- All contributors and supporters of the project
+
+## Contact
+
+Your Name - Rajat
+
+Project Link: [https://github.com/yourusername/pet-arogya](https://github.com/yourusername/pet-arogya)
