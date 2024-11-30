@@ -15,6 +15,7 @@ env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
   NODE_ENV: production
 
 jobs:
