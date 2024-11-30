@@ -2,7 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import { format } from 'date-fns'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 
 interface HealthAlert {
   id: string

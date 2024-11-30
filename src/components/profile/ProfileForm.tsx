@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'sonner'
@@ -43,7 +43,7 @@ interface ProfileFormProps {
     role: string
     license_no: string | null
     specialization: string | null
-  }
+  } | null
 }
 
 export default function ProfileForm({ user }: ProfileFormProps) {
@@ -57,11 +57,11 @@ export default function ProfileForm({ user }: ProfileFormProps) {
   } = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      full_name: user.full_name || '',
-      contact: user.contact || '',
-      address: user.address || '',
-      specialization: user.specialization || '',
-      license_no: user.license_no || '',
+      full_name: user?.full_name || '',
+      contact: user?.contact || '',
+      address: user?.address || '',
+      specialization: user?.specialization || '',
+      license_no: user?.license_no || '',
     },
   })
 
@@ -70,7 +70,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     handleSubmit: handlePasswordSubmit,
     formState: { errors: passwordErrors },
     reset: resetPassword,
-  } = useForm({
+  } = useForm<PasswordFormData>({
     resolver: zodResolver(passwordSchema),
   })
 
@@ -92,7 +92,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     }
   }
 
-  const onPasswordSubmit = async (data: PasswordFormData) => {
+  const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
     try {
       setIsSubmitting(true)
       const response = await fetch('/api/user/password', {
@@ -147,7 +147,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
               </label>
               <input
                 type="email"
-                value={user.email}
+                value={user?.email}
                 disabled
                 className="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-sm"
               />
@@ -181,7 +181,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
               )}
             </div>
 
-            {user.role === 'vet' && (
+            {user?.role === 'vet' && (
               <>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -261,7 +261,9 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 />
                 {passwordErrors.currentPassword && (
-                  <p className="mt-1 text-sm text-red-600">{passwordErrors.currentPassword.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {passwordErrors.currentPassword?.message?.toString()}
+                  </p>
                 )}
               </div>
 
@@ -275,7 +277,9 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 />
                 {passwordErrors.newPassword && (
-                  <p className="mt-1 text-sm text-red-600">{passwordErrors.newPassword.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {passwordErrors.newPassword?.message?.toString()}
+                  </p>
                 )}
               </div>
 
@@ -289,7 +293,9 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                 />
                 {passwordErrors.confirmPassword && (
-                  <p className="mt-1 text-sm text-red-600">{passwordErrors.confirmPassword.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {passwordErrors.confirmPassword?.message?.toString()}
+                  </p>
                 )}
               </div>
             </div>

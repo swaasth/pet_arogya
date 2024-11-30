@@ -30,7 +30,7 @@ export default function DogProfile({ dog }: DogProfileProps) {
           <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-500">Date of Birth</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {dog.dateOfBirth ? format(new Date(dog.dateOfBirth), 'PPP') : 'Not provided'}
+              {dog.dob ? format(new Date(dog.dob), 'PPP') : 'Not provided'}
             </dd>
           </div>
           <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -40,15 +40,9 @@ export default function DogProfile({ dog }: DogProfileProps) {
             </dd>
           </div>
           <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt className="text-sm font-medium text-gray-500">Weight</dt>
-            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {dog.weight ? `${dog.weight} kg` : 'Not provided'}
-            </dd>
-          </div>
-          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-500">Notes</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {dog.notes || 'No notes'}
+              {dog.medicalNotes || 'No notes'}
             </dd>
           </div>
         </dl>

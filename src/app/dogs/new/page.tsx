@@ -4,7 +4,7 @@ import DogForm from '@/components/dogs/DogForm'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { PawPrintIcon } from 'lucide-react'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 
 export default function NewDogPage() {
   const router = useRouter()

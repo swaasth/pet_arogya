@@ -23,8 +23,16 @@ const appointmentSchema = z.object({
 type AppointmentFormData = z.infer<typeof appointmentSchema>
 
 interface NewAppointmentFormProps {
-  pets: { id: string; name: string; breed: string }[]
-  vets: { id: string; full_name: string; specialization: string }[]
+  pets: {
+    id: string
+    name: string
+    breed: string
+  }[]
+  vets: {
+    id: string
+    full_name: string | null
+    specialization: string | null
+  }[]
 }
 
 const appointmentTypes = [

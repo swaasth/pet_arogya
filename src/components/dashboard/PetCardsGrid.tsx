@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Dog } from '@/types/dog'
 import Link from 'next/link'
 import { HomeIcon as PawPrintIcon } from '@heroicons/react/24/outline'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 
 interface DogsResponse {
   dogs: Dog[]

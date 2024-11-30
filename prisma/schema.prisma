@@ -20,6 +20,7 @@ model User {
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
   last_login    DateTime?
+  emailVerified DateTime?
   dogs          DogsOwners[]
   accounts      Account[]
   sessions      Session[]

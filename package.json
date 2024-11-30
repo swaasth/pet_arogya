@@ -1,18 +1,12 @@
 {
-  "name": "frontend",
+  "name": "pet_arogya",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "db:init": "ts-node scripts/init-database.ts",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
-    "prisma:generate": "prisma generate",
-    "db:reset": "npm run db:cleanup && npm run db:push",
-    "db:cleanup": "ts-node --project scripts/tsconfig.json scripts/cleanup-database.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
@@ -26,6 +20,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
     "@tanstack/react-query": "^5.61.4",
+    "@tanstack/react-query-devtools": "^5.62.0",
     "@vercel/postgres": "^0.7.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -37,6 +32,7 @@
     "mssql": "^9.1.1",
     "next": "15.0.3",
     "next-auth": "^4.24.10",
+    "next-themes": "^0.4.3",
     "react": "^18.3.1",
     "react-day-picker": "^9.4.0",
     "react-dom": "^18.3.1",
@@ -51,8 +47,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@shadcn/ui": "^0.0.4",
-    "@tailwindcss/forms": "^0.5.9",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/mssql": "^8.1.2",
@@ -65,7 +59,6 @@
     "postcss": "^8",
     "prisma": "^5.22.0",
     "tailwindcss": "^3.4.1",
-    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
 }

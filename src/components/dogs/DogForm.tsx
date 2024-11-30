@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
@@ -21,16 +21,16 @@ export default function DogForm({ initialData, isEditing = false }: DogFormProps
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const form = useForm({
+  const form = useForm<DogFormData>({
     resolver: zodResolver(dogSchema),
     defaultValues: {
-      name: initialData?.name || '',
-      breed: initialData?.breed || '',
-      dob: initialData?.dob ? new Date(initialData.dob).toISOString().split('T')[0] : '',
-      gender: initialData?.gender || 'male',
-      colorMarkings: initialData?.colorMarkings || '',
-      microchipId: initialData?.microchipId || '',
-      medicalNotes: initialData?.medicalNotes || ''
+      name: '',
+      breed: '',
+      dob: '',
+      gender: 'male',
+      colorMarkings: '',
+      microchipId: '',
+      medicalNotes: ''
     }
   })
 
@@ -59,7 +59,7 @@ export default function DogForm({ initialData, isEditing = false }: DogFormProps
     }
   })
 
-  const onSubmit = async (data: DogFormData) => {
+  const onSubmit: SubmitHandler<DogFormData> = async (data) => {
     setIsSubmitting(true)
     try {
       await mutation.mutateAsync(data)

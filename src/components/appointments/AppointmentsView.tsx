@@ -15,19 +15,21 @@ import { format } from 'date-fns'
 
 interface Appointment {
   id: string
-  dateTime: string
-  status: 'scheduled' | 'completed' | 'cancelled'
+  dogId: string
+  vetId: string
+  dateTime: Date
+  status: string
   type: string
-  notes?: string
+  notes?: string | null
   dog: {
     id: string
     name: string
+    breed: string
   }
   vet: {
     id: string
-    full_name: string
-    email: string
-    specialization: string
+    full_name: string | null
+    specialization: string | null
   }
 }
 
