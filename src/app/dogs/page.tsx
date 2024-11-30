@@ -8,7 +8,7 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { format } from 'date-fns'
 import { calculateAge } from '@/lib/utils'
 import { Badge } from '@/components/ui/Badge'
-import { Card, CardContent } from '@/components/ui/Card'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface Dog {
   id: string
