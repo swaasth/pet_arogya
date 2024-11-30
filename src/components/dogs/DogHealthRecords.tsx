@@ -1,11 +1,11 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { format } from 'date-fns'
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-hot-toast'
 import { useState } from 'react'
-import { Vaccination, DewormingRecord } from '@/types/dog'
+import { Button } from '@/components/ui/button'
+import { DataTable } from '@/components/ui/data-table'
+import { AddHealthRecordModal } from '@/components/health/AddHealthRecordModal'
 
 interface DogHealthRecordsProps {
   dogId: number
@@ -28,7 +28,7 @@ export default function DogHealthRecords({ dogId }: DogHealthRecordsProps) {
   const { vaccinations, dewormings } = healthRecords || { vaccinations: [], dewormings: [] }
 
   // Delete mutations
-  const deleteRecordMutation = useMutation({
+  const _deleteRecordMutation = useMutation({
     mutationFn: async ({ type, id }: { type: 'vaccination' | 'deworming', id: string }) => {
       const response = await fetch(`/api/dogs/${dogId}/${type}/${id}`, {
         method: 'DELETE',

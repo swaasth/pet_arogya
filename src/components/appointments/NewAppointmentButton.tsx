@@ -4,12 +4,20 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import AppointmentForm from './AppointmentForm'
 
+interface AppointmentData {
+  date: string
+  time: string
+  petId: string
+  vetId: string
+  notes?: string
+}
+
 export default function NewAppointmentButton() {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
 
   const createAppointment = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: AppointmentData) => {
       const response = await fetch('/api/appointments', {
         method: 'POST',
         headers: {

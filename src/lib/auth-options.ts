@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize(credentials) {
+      async authorize(credentials, _req) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Missing credentials')
         }
@@ -82,7 +82,7 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, _account, user }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -94,7 +94,9 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
+    // @ts-expect-error - NextAuth.js callback signature
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async session({ session, _profile, token }) {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;

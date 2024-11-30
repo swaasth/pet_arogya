@@ -8,11 +8,14 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { dogSchema } from '@/lib/validations/dog'
 import type { Dog } from '@/types/dog'
+import { z } from 'zod'
 
 interface DogFormProps {
   initialData?: Partial<Dog>
   isEditing?: boolean
 }
+
+type DogFormData = z.infer<typeof dogSchema>
 
 export default function DogForm({ initialData, isEditing = false }: DogFormProps) {
   const router = useRouter()
@@ -32,7 +35,7 @@ export default function DogForm({ initialData, isEditing = false }: DogFormProps
   })
 
   const mutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: DogFormData) => {
       const response = await fetch(`/api/dogs${isEditing ? `/${initialData?.id}` : ''}`, {
         method: isEditing ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -56,7 +59,7 @@ export default function DogForm({ initialData, isEditing = false }: DogFormProps
     }
   })
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: DogFormData) => {
     setIsSubmitting(true)
     try {
       await mutation.mutateAsync(data)

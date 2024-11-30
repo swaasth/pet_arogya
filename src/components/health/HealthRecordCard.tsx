@@ -1,9 +1,10 @@
 import { format } from 'date-fns'
-import { CalendarIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
+import { CalendarIcon, CheckCircleIcon, UserIcon } from '@heroicons/react/24/outline'
+import { PencilIcon } from '@heroicons/react/24/outline'
 import { Badge } from '../ui/Badge'
 
 interface HealthRecordCardProps {
-  type: 'vaccination' | 'deworming'
+  _type: 'vaccination' | 'deworming'
   name: string
   dateAdministered: Date
   nextDueDate: Date
@@ -13,7 +14,7 @@ interface HealthRecordCardProps {
 }
 
 export default function HealthRecordCard({
-  type,
+  _type,
   name,
   dateAdministered,
   nextDueDate,

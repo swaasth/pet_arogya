@@ -1,7 +1,7 @@
 'use client'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider, Session } from 'next-auth/react'
 import { useState } from 'react'
 
 export default function Providers({ 
@@ -9,7 +9,7 @@ export default function Providers({
   session
 }: { 
   children: React.ReactNode
-  session?: any // You can type this properly based on your session structure
+  session?: Session
 }) {
   const [queryClient] = useState(() => new QueryClient())
 

@@ -30,6 +30,9 @@ const passwordSchema = z.object({
   path: ["confirmPassword"],
 })
 
+type ProfileFormData = z.infer<typeof profileSchema>
+type PasswordFormData = z.infer<typeof passwordSchema>
+
 interface ProfileFormProps {
   user: {
     id: string
@@ -71,7 +74,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     resolver: zodResolver(passwordSchema),
   })
 
-  const onProfileSubmit = async (data: any) => {
+  const onProfileSubmit = async (data: ProfileFormData) => {
     try {
       setIsSubmitting(true)
       const response = await fetch('/api/user/profile', {
@@ -82,14 +85,14 @@ export default function ProfileForm({ user }: ProfileFormProps) {
 
       if (!response.ok) throw new Error('Failed to update profile')
       toast.success('Profile updated successfully')
-    } catch (error) {
+    } catch {
       toast.error('Failed to update profile')
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const onPasswordSubmit = async (data: any) => {
+  const onPasswordSubmit = async (data: PasswordFormData) => {
     try {
       setIsSubmitting(true)
       const response = await fetch('/api/user/password', {
@@ -102,7 +105,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       toast.success('Password updated successfully')
       resetPassword()
       setIsChangingPassword(false)
-    } catch (error) {
+    } catch {
       toast.error('Failed to update password')
     } finally {
       setIsSubmitting(false)

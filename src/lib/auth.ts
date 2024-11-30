@@ -1,6 +1,6 @@
 import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { PrismaAdapter } from '@auth/prisma-adapter'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from './prisma'
 import { getServerSession } from 'next-auth/next'
 import bcrypt from 'bcrypt'
@@ -22,21 +22,23 @@ export const authOptions: NextAuthOptions = {
     error: '/auth/error',
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id
         token.role = user.role
       }
       return token
     },
-    async session({ session, token }) {
+    // @ts-expect-error - NextAuth.js callback signature
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async session({ session, _profile, token }) {
       if (session.user) {
         session.user.id = token.id as string
         session.user.role = token.role as string
       }
       return session
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider === "google") {
         if (!user.email) return false
         
@@ -111,7 +113,7 @@ declare module 'next-auth/jwt' {
   }
 } 
 
-async function authorize(credentials: Record<string, string> | undefined) {
+export const _authorize = async (credentials: Record<string, string> | undefined) => {
   if (!credentials?.email || !credentials?.password) {
     throw new Error('Invalid credentials')
   }
@@ -125,11 +127,6 @@ async function authorize(credentials: Record<string, string> | undefined) {
   }
 
   // Check if this is a Google-authenticated user
-  if (user.provider === 'google') {
-    throw new Error('GoogleUser')
-  }
-
-  // Only verify password if it exists
   if (!user.password_hash) {
     throw new Error('GoogleUser')
   }

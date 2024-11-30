@@ -40,7 +40,7 @@ export default function RoleSelectionModal({ isOpen, onClose }: RoleSelectionMod
       toast.success('Role updated successfully');
       router.refresh();
       onClose();
-    } catch (error) {
+    } catch {
       toast.error('Failed to update role');
     } finally {
       setIsLoading(false);

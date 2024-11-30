@@ -89,10 +89,10 @@ export default function AuthForms() {
       await signIn("google", {
         callbackUrl,
       });
-    } catch (error) {
-      toast.error("Failed to sign in with Google");
+    } catch {
+      toast.error('Failed to sign in with Google')
     } finally {
-      setIsGoogleLoading(false);
+      setIsGoogleLoading(false)
     }
   };
 

@@ -4,8 +4,8 @@ export default function WelcomeHeader({ userName }: { userName: string }) {
       <h1 className="text-2xl font-semibold text-gray-900">
         Welcome Back, {userName}!
       </h1>
-      <p className="mt-2 text-sm text-gray-600">
-        Your pet family's health is in good hands. Here's an overview.
+      <p className="text-gray-600">
+        Here&apos;s what&apos;s happening with your pets today
       </p>
     </div>
   )

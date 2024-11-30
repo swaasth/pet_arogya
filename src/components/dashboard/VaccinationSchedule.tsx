@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { format, startOfWeek, addDays, isSameDay } from 'date-fns'
-import { CalendarIcon } from '@heroicons/react/24/outline'
 
 interface VaccinationEvent {
   id: string

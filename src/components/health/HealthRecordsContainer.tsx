@@ -8,6 +8,24 @@ import AddHealthRecordModal from './AddHealthRecordModal'
 import { Button } from '../ui/Button'
 import { PlusIcon } from '@heroicons/react/24/outline'
 
+interface VaccinationRecord {
+  id: string
+  vaccineName: string
+  dateAdministered: string
+  nextDueDate: string
+  administeredBy: string
+  notes?: string
+}
+
+interface DewormingRecord {
+  id: string
+  medicineName: string
+  dateAdministered: string
+  nextDueDate: string
+  administeredBy: string
+  notes?: string
+}
+
 interface HealthRecordsContainerProps {
   dogId: string
 }
@@ -78,7 +96,7 @@ export default function HealthRecordsContainer({ dogId }: HealthRecordsContainer
             {loadingVaccinations ? (
               <div>Loading vaccinations...</div>
             ) : vaccinations?.length > 0 ? (
-              vaccinations.map((vax: any) => (
+              vaccinations.map((vax: VaccinationRecord) => (
                 <HealthRecordCard
                   key={vax.id}
                   type="vaccination"
@@ -101,7 +119,7 @@ export default function HealthRecordsContainer({ dogId }: HealthRecordsContainer
             {loadingDewormings ? (
               <div>Loading deworming records...</div>
             ) : dewormings?.length > 0 ? (
-              dewormings.map((record: any) => (
+              dewormings.map((record: DewormingRecord) => (
                 <HealthRecordCard
                   key={record.id}
                   type="deworming"
