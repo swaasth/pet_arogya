@@ -11,9 +11,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
 }
 
 export default nextConfig 

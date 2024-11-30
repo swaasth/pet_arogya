@@ -30,10 +30,16 @@ jobs:
           node-version: '18.x'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install @radix-ui/react-slot @radix-ui/react-badge
 
       - name: Build Next.js app
-        run: npm run build
+        run: |
+          npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          NODE_ENV: production
 
       - name: Zip artifact for deployment
         run: zip -r release.zip ./* -x "node_modules/*"
