@@ -3,6 +3,33 @@ import { getServerSession } from 'next-auth'
 import { prisma } from '@/lib/prisma'
 import { authOptions } from '@/lib/auth-options'
 import { ApiError, handleApiError, successResponse, validateUser } from '@/lib/api-utils'
+import type { Appointment, Dog, DogsOwners } from '@prisma/client'
+
+interface AppointmentWithDog extends Appointment {
+  dog: Dog & {
+    owners: (DogsOwners & {
+      owner: {
+        id: string
+        full_name: string | null
+        email: string
+        contact: string | null
+      }
+    })[]
+  }
+}
+
+interface PatientDog {
+  id: string
+  name: string
+  breed: string
+  owners: Array<{
+    id: string
+    full_name: string | null
+    email: string
+    contact: string | null
+  }>
+  lastAppointment: Date
+}
 
 export async function GET(
   request: NextRequest,
@@ -43,18 +70,18 @@ export async function GET(
       orderBy: {
         dateTime: 'desc',
       },
-    })
+    }) as AppointmentWithDog[]
 
     // Transform the data to get unique dogs with their owners
     const uniqueDogs = Array.from(
-      new Map(
-        appointments.map(appointment => [
+      new Map<string, PatientDog>(
+        appointments.map((appointment: AppointmentWithDog) => [
           appointment.dog.id,
           {
             id: appointment.dog.id,
             name: appointment.dog.name,
             breed: appointment.dog.breed,
-            owners: appointment.dog.owners.map(owner => owner.owner),
+            owners: appointment.dog.owners.map(({ owner }) => owner),
             lastAppointment: appointment.dateTime,
           },
         ])

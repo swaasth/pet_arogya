@@ -3,6 +3,12 @@ import { getServerSession } from 'next-auth'
 import { prisma } from '@/lib/prisma'
 import { authOptions } from '@/lib/auth-options'
 import { ApiError, handleApiError, successResponse, validateUser } from '@/lib/api-utils'
+import type { DogsOwners } from '@prisma/client'
+
+interface DogWithOwners {
+  id: string
+  owners: DogsOwners[]
+}
 
 export async function GET(
   request: NextRequest,
@@ -23,7 +29,7 @@ export async function GET(
     }
 
     // Verify user has access to this dog
-    const hasAccess = dog.owners.some(owner => owner.ownerId === session.user.id)
+    const hasAccess = dog.owners.some((owner: DogsOwners) => owner.ownerId === session.user.id)
     if (!hasAccess && session.user.role !== 'veterinary') {
       throw new ApiError('Unauthorized access', 403)
     }

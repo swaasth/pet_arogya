@@ -25,7 +25,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   vetAppointments Appointment[] @relation("VetAppointments")
-  resetToken       String?
+  resetToken       String?   @db.Text
   resetTokenExpiry DateTime?
 
   @@map("Users")
@@ -39,7 +39,7 @@ model Dog {
   gender         String    @map("Gender")
   colorMarkings  String?   @map("ColorMarkings")
   microchipId    String?   @map("MicrochipID")
-  medicalNotes   String?   @map("MedicalNotes")
+  medicalNotes   String?   @map("MedicalNotes") @db.Text
   created_at     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
   owners         DogsOwners[]
@@ -96,9 +96,10 @@ model Breeds {
   activityLevel    String   @map("ActivityLevel")
   groomingNeeds    String   @map("GroomingNeeds")
   lifeExpectancy   String   @map("LifeExpectancy")
-  commonHealthIssues String  @map("CommonHealthIssues")
+  commonHealthIssues String  @map("CommonHealthIssues") @db.Text
 
   @@map("Breeds")
+  @@index([name])
 }
 
 model Account {
@@ -118,6 +119,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -145,9 +147,10 @@ model Appointment {
   dateTime    DateTime  @map("AppointmentDateTime")
   status      String    @default("scheduled") // scheduled, completed, cancelled
   type        String    @map("AppointmentType") // checkup, vaccination, emergency, etc.
-  notes       String?   @map("Notes")
+  notes       String?   @map("Notes") @db.Text
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 
   @@map("Appointments")
+  @@index([dogId, vetId, dateTime])
 } 

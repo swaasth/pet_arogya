@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 import { Tab } from '@headlessui/react'
 import { PawPrintIcon, CalendarIcon, ClipboardIcon } from 'lucide-react'
-import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import DogProfile from '@/components/dogs/DogProfile'
 import { format } from 'date-fns'
 

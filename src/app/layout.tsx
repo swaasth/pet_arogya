@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Providers from '@/components/providers/Providers'
-import NavbarWrapper from '@/components/layout/NavbarWrapper'
+import NavbarWrapper from '@/components/layouts/NavbarWrapper'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
