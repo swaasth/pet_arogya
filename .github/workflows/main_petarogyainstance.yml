@@ -32,7 +32,6 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm install @radix-ui/react-slot @radix-ui/react-badge
 
       - name: Build Next.js app
         run: |
