@@ -21,7 +21,7 @@ export async function GET() {
           dog: {
             owners: {
               some: {
-                ownerId: session.user.profileId
+                ownerId: session.user.id
               }
             }
           },
@@ -43,7 +43,7 @@ export async function GET() {
           dog: {
             owners: {
               some: {
-                ownerId: session.user.profileId
+                ownerId: session.user.id
               }
             }
           },
@@ -81,7 +81,8 @@ export async function GET() {
     ]
 
     return NextResponse.json(alerts)
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('Error fetching health alerts:', error)
     return NextResponse.json(
       { error: 'Failed to fetch health alerts' },
       { status: 500 }

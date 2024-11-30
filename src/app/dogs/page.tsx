@@ -1,13 +1,28 @@
 'use client'
 
+import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { PlusIcon, PawPrintIcon, CalendarIcon } from 'lucide-react'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { format } from 'date-fns'
 import { calculateAge } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+
+interface Dog {
+  id: string
+  name: string
+  breed: string
+  dob: string
+  gender: 'male' | 'female'
+  vaccinations?: Array<{
+    dateAdministered: string
+  }>
+  dewormings?: Array<{
+    dateAdministered: string
+  }>
+}
 
 export default function DogsPage() {
   const { data, isLoading } = useQuery({
@@ -29,7 +44,7 @@ export default function DogsPage() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">My Pets</h1>
           <p className="mt-2 text-sm text-gray-700">
-            Manage your pets' profiles and health records
+            Manage your pets&apos; profiles and health records
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
@@ -62,7 +77,7 @@ export default function DogsPage() {
         </div>
       ) : (
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {dogs.map((dog: any) => (
+          {dogs.map((dog: Dog) => (
             <Link key={dog.id} href={`/dogs/${dog.id}`}>
               <Card className="hover:shadow-md transition-shadow">
                 <CardContent className="p-6">

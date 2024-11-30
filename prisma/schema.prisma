@@ -24,6 +24,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   vetAppointments Appointment[] @relation("VetAppointments")
+  resetToken       String?
+  resetTokenExpiry DateTime?
 
   @@map("Users")
 }

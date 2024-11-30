@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
@@ -22,15 +22,19 @@ interface AppointmentFormProps {
   onCancel: () => void
 }
 
+// Add interface for Dog type based on your Prisma schema
+interface Dog {
+  id: string
+  name: string
+}
+
 export default function AppointmentForm({ onSubmit, onCancel }: AppointmentFormProps) {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-  
   const { register, handleSubmit, formState: { errors } } = useForm<AppointmentFormData>({
     resolver: zodResolver(appointmentSchema)
   })
 
-  // Fetch user's dogs
-  const { data: dogs } = useQuery({
+  // Updated query with proper typing
+  const { data: dogs } = useQuery<Dog[]>({
     queryKey: ['dogs'],
     queryFn: async () => {
       const response = await fetch('/api/dogs')
@@ -52,7 +56,7 @@ export default function AppointmentForm({ onSubmit, onCancel }: AppointmentFormP
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         >
           <option value="">Select a pet</option>
-          {dogs?.map((dog: any) => (
+          {dogs?.map((dog: Dog) => (
             <option key={dog.id} value={dog.id}>
               {dog.name}
             </option>

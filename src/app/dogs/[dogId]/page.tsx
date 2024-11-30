@@ -4,9 +4,23 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 import { Tab } from '@headlessui/react'
 import { PawPrintIcon, CalendarIcon, ClipboardIcon } from 'lucide-react'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 import DogProfile from '@/components/dogs/DogProfile'
 import { format } from 'date-fns'
+
+type Vaccination = {
+  id: string
+  vaccineName: string
+  dateAdministered: string
+  nextDueDate: string
+}
+
+type Deworming = {
+  id: string
+  medicineName: string
+  dateAdministered: string
+  nextDueDate: string
+}
 
 export default function DogPage() {
   const params = useParams()
@@ -46,7 +60,7 @@ export default function DogPage() {
             <div className="border-t border-gray-200">
               {dog.vaccinations?.length > 0 ? (
                 <div className="divide-y divide-gray-200">
-                  {dog.vaccinations.map((vax: any) => (
+                  {dog.vaccinations.map((vax: Vaccination) => (
                     <div key={vax.id} className="px-4 py-4 sm:px-6">
                       <div className="flex justify-between">
                         <div>
@@ -82,7 +96,7 @@ export default function DogPage() {
             <div className="border-t border-gray-200">
               {dog.dewormings?.length > 0 ? (
                 <div className="divide-y divide-gray-200">
-                  {dog.dewormings.map((record: any) => (
+                  {dog.dewormings.map((record: Deworming) => (
                     <div key={record.id} className="px-4 py-4 sm:px-6">
                       <div className="flex justify-between">
                         <div>
@@ -131,7 +145,7 @@ export default function DogPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8 flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">{dog.name}'s Profile</h1>
+        <h1 className="text-3xl font-bold text-gray-900">{dog.name}&apos;s Profile</h1>
         <button
           onClick={() => router.push('/dogs')}
           className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"

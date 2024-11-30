@@ -69,6 +69,7 @@ export function AppointmentCard({ appointment, userRole }: AppointmentCardProps)
       toast.success('Appointment status updated')
       router.refresh()
     } catch (error) {
+      console.error('Error updating appointment status:', error)
       toast.error('Failed to update appointment status')
     } finally {
       setIsLoading(false)
@@ -91,6 +92,7 @@ export function AppointmentCard({ appointment, userRole }: AppointmentCardProps)
       toast.success('Appointment cancelled')
       router.refresh()
     } catch (error) {
+      console.error('Error deleting appointment:', error)
       toast.error('Failed to cancel appointment')
     } finally {
       setIsLoading(false)

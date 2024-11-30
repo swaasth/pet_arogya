@@ -22,6 +22,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
+    console.error('Error deleting deworming record:', error)
     return NextResponse.json(
       { error: 'Failed to delete deworming record' },
       { status: 500 }

@@ -1,6 +1,4 @@
-import { format } from 'date-fns'
-import { Badge } from '@/components/ui/badge'
-import { useSession } from 'next-auth/react'
+import React from 'react'
 import { AppointmentCard } from './AppointmentCard'
 
 interface AppointmentListProps {
@@ -24,8 +22,6 @@ interface AppointmentListProps {
 }
 
 export default function AppointmentList({ appointments }: AppointmentListProps) {
-  const { data: session } = useSession()
-  
   if (!appointments.length) {
     return (
       <div className="text-center py-10">
@@ -40,7 +36,6 @@ export default function AppointmentList({ appointments }: AppointmentListProps) 
         <AppointmentCard 
           key={appointment.id}
           appointment={appointment}
-          userRole={session?.user?.role}
         />
       ))}
     </div>

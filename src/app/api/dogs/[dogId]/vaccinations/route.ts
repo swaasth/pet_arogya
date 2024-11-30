@@ -31,7 +31,8 @@ export async function GET(
     })
 
     return NextResponse.json(vaccinations)
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('Error fetching vaccinations:', error)
     return NextResponse.json(
       { error: 'Failed to fetch vaccinations' },
       { status: 500 }
@@ -63,7 +64,8 @@ export async function POST(
     })
 
     return NextResponse.json(vaccination)
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('Error creating vaccination record:', error)
     return NextResponse.json(
       { error: 'Failed to create vaccination record' },
       { status: 500 }

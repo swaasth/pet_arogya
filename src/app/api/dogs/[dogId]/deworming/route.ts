@@ -31,7 +31,8 @@ export async function GET(
     })
 
     return NextResponse.json(records)
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('Error fetching deworming records:', error);
     return NextResponse.json(
       { error: 'Failed to fetch deworming records' },
       { status: 500 }
@@ -51,36 +52,20 @@ export async function POST(
 
     const { medicineName, dateAdministered, nextDueDate, administeredBy, notes } = await request.json()
 
-    const pool = await getDbConnection()
-    
-    const result = await pool.request()
-      .input('dogId', params.dogId)
-      .input('medicineName', medicineName)
-      .input('dateAdministered', dateAdministered)
-      .input('nextDueDate', nextDueDate)
-      .input('administeredBy', administeredBy)
-      .input('notes', notes)
-      .query(`
-        INSERT INTO Deworming (
-          DogID,
-          MedicineName,
-          DateAdministered,
-          NextDueDate,
-          AdministeredBy,
-          Notes
-        )
-        VALUES (
-          @dogId,
-          @medicineName,
-          @dateAdministered,
-          @nextDueDate,
-          @administeredBy,
-          @notes
-        )
-      `)
+    await prisma.deworming.create({
+      data: {
+        dogId: params.dogId,
+        medicineName,
+        dateAdministered,
+        nextDueDate,
+        administeredBy,
+        notes
+      }
+    })
 
     return NextResponse.json({ success: true })
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('Error adding deworming record:', error);
     return NextResponse.json(
       { error: 'Failed to add deworming record' },
       { status: 500 }

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { PawPrintIcon, Mail, Lock, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -63,8 +64,9 @@ export default function LoginPage() {
         } else {
           setError('Registration failed')
         }
-      } catch (err) {
+      } catch (error: unknown) {
         setError('Something went wrong')
+        console.error('Registration error:', error)
       }
     }
   }
@@ -80,8 +82,9 @@ export default function LoginPage() {
       if (result?.error) {
         setError('Failed to sign in with Google')
       }
-    } catch (error) {
+    } catch (error: unknown) {
       setError('An unexpected error occurred')
+      console.error('Google sign in error:', error)
     } finally {
       setIsLoading(false)
     }
@@ -159,7 +162,13 @@ export default function LoginPage() {
                   {isLoading ? (
                     <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
                   ) : (
-                    <img src="/google.svg" alt="Google" className="w-5 h-5" />
+                    <Image 
+                      src="/google.svg" 
+                      alt="Google"
+                      width={20}
+                      height={20}
+                      priority
+                    />
                   )}
                   Continue with Google
                 </button>

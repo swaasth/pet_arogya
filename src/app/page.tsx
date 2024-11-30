@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { PawPrintIcon, HeartPulseIcon, CalendarIcon, BellIcon } from 'lucide-react'
+import Image from 'next/image'
 
 export default function LandingPage() {
   return (
@@ -72,12 +72,13 @@ export default function LandingPage() {
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
-                  <img
+                  <Image
                     src="/hero-pets.png"
                     alt="Happy pets"
                     className="w-full h-auto object-cover object-center rounded-lg"
                     width={1024}
                     height={1024}
+                    priority
                   />
                 </div>
               </motion.div>
@@ -94,7 +95,7 @@ export default function LandingPage() {
               Everything your pet needs
             </h2>
             <p className="mt-4 text-xl text-gray-600">
-              All-in-one platform for managing your pet's health and well-being
+              All-in-one platform for managing your pet&apos;s health and well-being
             </p>
           </div>
 
@@ -144,7 +145,7 @@ export default function LandingPage() {
             <span className="block">Start your free trial today.</span>
           </h2>
           <p className="mt-4 text-lg leading-6 text-purple-200">
-            Join thousands of pet parents who trust Pet Arogya for their furry friends' health management.
+            Join thousands of pet parents who trust Pet Arogya for their furry friends&apos; health management.
           </p>
           <Link
             href="/auth/login"

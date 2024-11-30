@@ -62,8 +62,8 @@ export async function GET(
     }
 
     return NextResponse.json(dog)
-  } catch (error) {
-    console.error('Error fetching dog:', error)
+  } catch (err) {
+    console.error('Error:', err)
     return NextResponse.json(
       { error: 'Failed to fetch dog details' },
       { status: 500 }
@@ -78,6 +78,13 @@ export async function PUT(
   try {
     const { dogId } = context.params
     const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     const data = await request.json()
 
     const body = dogSchema.parse(data)
@@ -116,11 +123,11 @@ export async function PUT(
     })
 
     return NextResponse.json({ dog: updatedDog })
-  } catch (error) {
-    console.error('Error updating dog:', error)
-    if (error instanceof z.ZodError) {
+  } catch (err) {
+    console.error('Error:', err)
+    if (err instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
+        { error: 'Validation failed', details: err.errors },
         { status: 400 }
       )
     }
@@ -139,8 +146,43 @@ export async function DELETE(
     const { dogId } = context.params
     const session = await getServerSession(authOptions)
 
-    // ... rest of your DELETE logic
-  } catch (error) {
-    // ... error handling
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
+    const dog = await prisma.dog.findFirst({
+      where: {
+        id: dogId,
+        owners: {
+          some: {
+            ownerId: session.user.id
+          }
+        }
+      }
+    })
+
+    if (!dog) {
+      return NextResponse.json(
+        { error: 'Dog not found or unauthorized' },
+        { status: 404 }
+      )
+    }
+
+    await prisma.dog.delete({
+      where: {
+        id: dogId
+      }
+    })
+
+    return NextResponse.json({ message: 'Dog deleted successfully' })
+  } catch (err) {
+    console.error('Error:', err)
+    return NextResponse.json(
+      { error: 'Failed to delete dog' },
+      { status: 500 }
+    )
   }
 } 
