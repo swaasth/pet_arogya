@@ -7,8 +7,8 @@ import { PlusIcon, PawPrintIcon, CalendarIcon } from 'lucide-react'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { format } from 'date-fns'
 import { calculateAge } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/Badge'
+import { Card, CardContent } from '@/components/ui/Card'
 
 interface Dog {
   id: string
