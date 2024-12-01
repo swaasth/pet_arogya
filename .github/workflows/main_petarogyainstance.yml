@@ -11,8 +11,6 @@ on:
 
 env:
   RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-  NODE_VERSION: '20.x'
-  AZURE_WEBAPP_NAME: 'petarogyainstance'
 
 jobs:
   build:
@@ -21,36 +19,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          node-version: '20.x'
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-
-      # Only include necessary files for production
-      - name: Create production package
+      - name: npm install, build, and test
         run: |
-          mkdir deployment
-          cp -r .next deployment/.next
-          cp -r public deployment/public
-          cp package.json deployment/
-          cp package-lock.json deployment/
-          cp next.config.ts deployment/
-          cp prisma/schema.prisma deployment/schema.prisma
-          cp web.config deployment/
-          cp server.js deployment/
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+
+      - name: Zip artifact for deployment
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: deployment
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -59,24 +46,17 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
-          path: .
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install production dependencies
-        run: npm ci --only=production
-
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -84,11 +64,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3ECB305CEE6440CB878FD8A0A98F7CCA }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_26D4C838494A4068BB3E8FB8BD126140 }}
 
-      - name: Deploy to Azure Web App
+      - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: 'petarogyainstance'
           slot-name: 'Production'
           package: .
           
