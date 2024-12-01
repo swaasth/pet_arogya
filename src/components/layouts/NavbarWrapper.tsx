@@ -2,15 +2,17 @@
 
 import { usePathname } from 'next/navigation'
 import TopNavbar from './TopNavbar'
-
-const publicPaths = ['/auth/login', '/auth/register', '/auth/forgot-password']
+import { useSession } from 'next-auth/react'
 
 export default function NavbarWrapper() {
+  const { data: session } = useSession()
   const pathname = usePathname()
   
-  if (publicPaths.includes(pathname)) {
+  // Don't show navbar on root and auth pages
+  const hideNavbarPaths = ['/', '/auth/login', '/auth/register']
+  if (hideNavbarPaths.includes(pathname)) {
     return null
   }
 
-  return <TopNavbar />
+  return <TopNavbar user={session?.user} />
 } 

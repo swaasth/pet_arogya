@@ -21,7 +21,11 @@ export async function GET() {
               include: {
                 vaccinations: true,
                 dewormings: true,
-                appointments: true,
+                appointments: {
+                  where: {
+                    status: 'scheduled'
+                  }
+                }
               }
             }
           }
@@ -34,43 +38,53 @@ export async function GET() {
     }
 
     const nextMonth = addDays(new Date(), 30)
-    
-    // Count upcoming events
-    let upcomingVaccinations = 0
-    let upcomingDeworming = 0
-    let pendingAppointments = 0
+    const alerts = []
 
     user.dogs.forEach(({ dog }) => {
       // Check vaccinations
       dog.vaccinations.forEach(vax => {
         if (vax.nextDueDate <= nextMonth) {
-          upcomingVaccinations++
+          alerts.push({
+            id: `vax-${vax.id}`,
+            type: 'vaccination',
+            dogName: dog.name,
+            message: `${vax.vaccineName} vaccination due`,
+            dueDate: vax.nextDueDate.toISOString()
+          })
         }
       })
 
       // Check dewormings
       dog.dewormings.forEach(deworming => {
         if (deworming.nextDueDate <= nextMonth) {
-          upcomingDeworming++
+          alerts.push({
+            id: `deworming-${deworming.id}`,
+            type: 'deworming',
+            dogName: dog.name,
+            message: `${deworming.medicineName} deworming due`,
+            dueDate: deworming.nextDueDate.toISOString()
+          })
         }
       })
 
       // Check appointments
       dog.appointments.forEach(apt => {
-        if (apt.status === 'scheduled') {
-          pendingAppointments++
-        }
+        alerts.push({
+          id: `apt-${apt.id}`,
+          type: 'checkup',
+          dogName: dog.name,
+          message: `Scheduled appointment: ${apt.type}`,
+          dueDate: apt.dateTime.toISOString()
+        })
       })
     })
 
-    return NextResponse.json({
-      totalPets: user.dogs.length,
-      upcomingVaccinations,
-      upcomingDeworming,
-      pendingAppointments
-    })
+    // Sort alerts by due date
+    alerts.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
+
+    return NextResponse.json(alerts)
   } catch (error) {
-    console.error('Error fetching dashboard stats:', error)
+    console.error('Error fetching health alerts:', error)
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 } 

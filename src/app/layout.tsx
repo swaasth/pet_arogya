@@ -21,10 +21,11 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions)
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head />
       <body className={inter.className}>
         <Providers session={session}>
-          <div className="min-h-screen bg-gray-50">
+          <div className="min-h-screen bg-background">
             <NavbarWrapper />
             {children}
           </div>

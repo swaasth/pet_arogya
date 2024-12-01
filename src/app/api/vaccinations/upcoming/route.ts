@@ -19,9 +19,7 @@ export async function GET() {
           include: {
             dog: {
               include: {
-                vaccinations: true,
-                dewormings: true,
-                appointments: true,
+                vaccinations: true
               }
             }
           }
@@ -34,43 +32,27 @@ export async function GET() {
     }
 
     const nextMonth = addDays(new Date(), 30)
-    
-    // Count upcoming events
-    let upcomingVaccinations = 0
-    let upcomingDeworming = 0
-    let pendingAppointments = 0
+    const vaccinations = []
 
     user.dogs.forEach(({ dog }) => {
-      // Check vaccinations
       dog.vaccinations.forEach(vax => {
         if (vax.nextDueDate <= nextMonth) {
-          upcomingVaccinations++
-        }
-      })
-
-      // Check dewormings
-      dog.dewormings.forEach(deworming => {
-        if (deworming.nextDueDate <= nextMonth) {
-          upcomingDeworming++
-        }
-      })
-
-      // Check appointments
-      dog.appointments.forEach(apt => {
-        if (apt.status === 'scheduled') {
-          pendingAppointments++
+          vaccinations.push({
+            id: vax.id,
+            dogName: dog.name,
+            vaccineName: vax.vaccineName,
+            date: vax.nextDueDate
+          })
         }
       })
     })
 
-    return NextResponse.json({
-      totalPets: user.dogs.length,
-      upcomingVaccinations,
-      upcomingDeworming,
-      pendingAppointments
-    })
+    // Sort vaccinations by date
+    vaccinations.sort((a, b) => a.date.getTime() - b.date.getTime())
+
+    return NextResponse.json({ vaccinations })
   } catch (error) {
-    console.error('Error fetching dashboard stats:', error)
+    console.error('Error fetching upcoming vaccinations:', error)
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 } 

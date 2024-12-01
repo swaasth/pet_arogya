@@ -16,14 +16,30 @@ export default function Providers({
   children,
   session
 }: ProvidersProps) {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        onError: (error) => {
+          console.error('Query Error:', error)
+        }
+      }
+    }
+  }))
 
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
-        <ThemeProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
+          <ReactQueryDevtools initialIsOpen={false} />
         </ThemeProvider>
       </SessionProvider>
     </QueryClientProvider>

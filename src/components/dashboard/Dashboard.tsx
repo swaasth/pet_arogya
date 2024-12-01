@@ -24,14 +24,14 @@ export default function Dashboard({ user }: DashboardProps) {
         {/* Main Content */}
         <div className="flex-1 space-y-6">
           {/* Pet Cards Section */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Pets</h2>
+          <div className="bg-card rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-card-foreground mb-4">Your Pets</h2>
             <PetCardsGrid />
           </div>
           
           {/* Vaccination Schedule */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Vaccination Schedule</h2>
+          <div className="bg-card rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-card-foreground mb-4">Vaccination Schedule</h2>
             <VaccinationSchedule />
           </div>
         </div>

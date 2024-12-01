@@ -7,6 +7,7 @@ import {
   CalendarIcon, 
   ExclamationCircleIcon 
 } from '@heroicons/react/24/outline'
+import { LoadingSpinner } from '../common/LoadingSpinner'
 
 interface HealthStats {
   totalPets: number
@@ -16,7 +17,7 @@ interface HealthStats {
 }
 
 export default function HealthMetrics() {
-  const { data: stats } = useQuery<HealthStats>({
+  const { data: stats, isLoading, isError, error } = useQuery<HealthStats>({
     queryKey: ['healthStats'],
     queryFn: async () => {
       const response = await fetch('/api/dashboard/stats')
@@ -24,6 +25,18 @@ export default function HealthMetrics() {
       return response.json()
     }
   })
+
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+        Error loading health metrics: {error instanceof Error ? error.message : 'Unknown error'}
+      </div>
+    )
+  }
 
   const metrics = [
     {
@@ -61,7 +74,7 @@ export default function HealthMetrics() {
       {metrics.map((metric) => (
         <div
           key={metric.name}
-          className="bg-white overflow-hidden rounded-lg shadow"
+          className="bg-card overflow-hidden rounded-lg shadow"
         >
           <div className="p-5">
             <div className="flex items-center">
@@ -70,10 +83,10 @@ export default function HealthMetrics() {
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
+                  <dt className="text-sm font-medium text-muted-foreground truncate">
                     {metric.name}
                   </dt>
-                  <dd className="text-lg font-semibold text-gray-900">
+                  <dd className="text-lg font-semibold text-card-foreground">
                     {metric.value}
                   </dd>
                 </dl>

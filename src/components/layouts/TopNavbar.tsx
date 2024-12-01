@@ -1,11 +1,18 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { User } from '@prisma/client'
 import { UserMenu } from '../common/UserMenu'
-import { Logo } from '../common/Logo'
+import { PawPrintIcon, SunIcon, MoonIcon } from 'lucide-react'
+import { useTheme } from 'next-themes'
+import { Button } from '../ui/button'
+import { useEffect, useState } from 'react'
 
 interface TopNavbarProps {
-  user: User
+  user?: {
+    id: string
+    email: string
+    role: string
+    full_name?: string | null
+  }
 }
 
 interface NavItem {
@@ -24,14 +31,23 @@ const navItems: NavItem[] = [
 
 export default function TopNavbar({ user }: TopNavbarProps) {
   const pathname = usePathname()
-  const userRole = user.role
+  const userRole = user?.role || 'pet_owner'
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const filteredNavItems = navItems.filter(item => item.roles.includes(userRole))
 
   return (
     <nav className="border-b bg-background">
       <div className="container mx-auto flex h-16 items-center px-4">
-        <Logo />
+        <Link href="/dashboard" className="flex items-center">
+          <PawPrintIcon className="h-8 w-8 text-purple-600" />
+          <span className="ml-2 text-2xl font-bold text-foreground">Pet Arogya</span>
+        </Link>
         
         <div className="ml-auto flex items-center space-x-4">
           {filteredNavItems.map((item) => (
@@ -41,12 +57,26 @@ export default function TopNavbar({ user }: TopNavbarProps) {
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 pathname === item.href
                   ? 'text-foreground'
-                  : 'text-foreground/60'
+                  : 'text-muted-foreground'
               }`}
             >
               {item.label}
             </Link>
           ))}
+          {mounted && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="mr-2"
+            >
+              {theme === 'dark' ? (
+                <SunIcon className="h-5 w-5" />
+              ) : (
+                <MoonIcon className="h-5 w-5" />
+              )}
+            </Button>
+          )}
           <UserMenu user={user} />
         </div>
       </div>

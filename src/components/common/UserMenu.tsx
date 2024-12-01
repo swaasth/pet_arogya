@@ -11,15 +11,20 @@ import {
 } from '../ui/dropdown-menu'
 
 interface UserMenuProps {
-  user: User
+  user?: {
+    email: string
+    full_name?: string | null
+  }
 }
 
 export function UserMenu({ user }: UserMenuProps) {
+  if (!user) return null
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-2 outline-none">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-          {user.full_name?.[0] || user.email[0].toUpperCase()}
+          {user?.full_name?.[0] || user?.email?.[0]?.toUpperCase() || 'U'}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
