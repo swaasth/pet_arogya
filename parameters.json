@@ -1,0 +1,6 @@
+{
+    "name": "pet-arogya-github-production",
+    "issuer": "https://token.actions.githubusercontent.com",
+    "subject": "repo:swaasth/pet_arogya:environment:Production",
+    "audiences": ["api://AzureADTokenExchange"]
+}
